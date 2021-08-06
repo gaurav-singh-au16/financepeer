@@ -3,6 +3,14 @@ const router = express.Router()
 const UserModel  = require('../models/user')
 const bcrypt = require("bcrypt")
 const session = require('express-session')
+const cors = require('cors');
+
+// router.use(
+//     cors({
+//       origin: 'http://localhost:3000/signup',
+//       credentials: true,
+//     })
+//   );
 
 router.use(session({
     secret: "home",
@@ -16,7 +24,7 @@ router.use(session({
 // Login & Signup Page
 
 router.get("/login", (req, res) => {
-    
+    res.render('loginSignup')
     
 })
 
@@ -24,14 +32,14 @@ router.get("/login", (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.session.destroy()
-    
+    res.redirect('/login')
 })
 
 // customer Signup Post route
 
-let globalData = {}
-router.post('/signUp', async (req, res) => {
-    const { name, email, mobile, password } = req.body
+
+router.post('/signup', async (req, res) => {
+    const { name, email, password } = req.body
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash((req.body).password, salt)
     signUpData = {
@@ -39,7 +47,7 @@ router.post('/signUp', async (req, res) => {
         email,
         password: hashedPassword
     }
-    globalData = signUpData
+    console.log(signUpData)
     try {
 
         const newUserDoc = new UserModel(signUpData)
@@ -47,7 +55,7 @@ router.post('/signUp', async (req, res) => {
         const savedUserDoc = await newUserDoc.save()
 
         req.session.isLoggedIn = true
-    
+        res.redirect('/upload')
 
     } catch (error) {
         console.log(error)
@@ -75,7 +83,7 @@ router.post('/login', async (req, res) => {
 
         req.session.isLoggedIn = true
         req.session.user = foundUser
-
+        res.redirect('/upload')
         
 
     }

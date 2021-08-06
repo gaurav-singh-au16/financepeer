@@ -4,6 +4,18 @@ const mongoose = require('mongoose')
 const fileUpload = require('express-fileupload')
 require('dotenv').config()
 app.use(fileUpload())
+const expHbs = require('express-handlebars')
+
+app.use(express.urlencoded({ extended: false }))
+app.use(express.static("style"))
+app.use(express.static("script"))
+
+app.engine('hbs', expHbs({
+    extname: 'hbs',
+    defaultLayout: false
+
+}))
+app.set('view engine', 'hbs')
 
 const {DATABASE} = process.env
 

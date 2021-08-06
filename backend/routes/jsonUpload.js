@@ -8,10 +8,23 @@ const fileUpload = require('express-fileupload')
 
 router.use(fileUpload())
 
+router.get('/upload', (req, res) => {
+    res.render('upload')
+})
 
+router.post('/uploadfile', async(req, res) => {
 
-router.get('/upload', async(req, res) => {
-
+    let myFile = req.files.filename
+    const data = {
+        "filename": myFile.name
+    }
+    myFile.mv(`./db/images/${myFile.name}`, (err) => {
+        if (err) {
+            res.send({uploaded: false})
+            return
+        }
+        res.send({uploaded: true})
+    })
     let rawdata = fs.readFileSync('./upload/data.json');
     let JsonData = JSON.parse(rawdata);
     console.log(JsonData)
@@ -25,19 +38,5 @@ router.get('/upload', async(req, res) => {
     }
 })
 
-router.post('/upload', (req, res) => {
-    console.log("Received Request")
-    let myFile = req.files.filename
-    const data = {
-        "filename": myFile.name
-    }
-    myFile.mv(`./upload/${myFile.name}`, (err) => {
-        if (err) {
-            res.send({uploaded: false})
-            return
-        }
-        res.send({uploaded: true})
-    })
-})
 
 module.exports = router
