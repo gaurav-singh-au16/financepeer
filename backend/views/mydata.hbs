@@ -24,22 +24,24 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/login" class="nav-link px-2 text-light">Home</a></li>
                     <li><a href="/logout" class="nav-link px-2 text-light">Logout</a></li>
-                    <li><a href="/mydata" class="nav-link px-2 text-light">My Data</a></li>
+                    <li><a href="/upload" class="nav-link px-2 text-light">Upload</a></li>
                 </ul>
             </div>
         </div>
     </header>
 
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <div class='container border border-dark rounded w-50 bg-light mt-5'>
-            <h1 class='text-center display-5 mt-3'>Upload File</h1>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Upload JSON File</label>
-                <input class="form-control" type="file" id="formFile" name="filename">
-                <button class='btn btn-primary my-3'>Upload</button>
-            </div>
-        </div>
-    </form>
+    <div class="container row w-100 text-center mx-5">
+        {{#each result}}
+            <div class="card m-1 bg-light" style="width: 18rem;">
+                <div class="card-body col">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.body}}</p>
+                    <a href="#" class="card-link">User Id: {{this.userId}}</a>
+                    <a href="#" class="card-link">Id: {{this.id}}</a>
+                </div>
+                </div>
+        {{/each}}
+    </div>
 
     {{!-- Footer --}}
     <hr class="featurette-divider">

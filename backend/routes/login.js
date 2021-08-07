@@ -74,7 +74,7 @@ router.post('/login', async (req, res) => {
         let err = {
             error: "Email Not Exist"
         }
-        res.render("customerLogin", err)
+        res.render("loginSignup", err)
     }
     const isMatching = await bcrypt.compare(password, foundUser.password)
 

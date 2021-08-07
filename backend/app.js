@@ -3,12 +3,12 @@ const app = express()
 const mongoose = require('mongoose')
 const fileUpload = require('express-fileupload')
 require('dotenv').config()
-app.use(fileUpload())
 const expHbs = require('express-handlebars')
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static("style"))
 app.use(express.static("script"))
+app.use(express.static("public"))
 
 app.engine('hbs', expHbs({
     extname: 'hbs',
@@ -22,9 +22,13 @@ const {DATABASE} = process.env
 app.use(express.static("upload"))
 const loginRoute = require('./routes/login')
 const jsonUploadRoute = require('./routes/jsonUpload')
+const myDataRoute = require('./routes/mydata')
+
 
 app.use('', loginRoute)
 app.use('', jsonUploadRoute)
+app.use('', myDataRoute)
+
 
 mongoose.connect(DATABASE, {
     useNewUrlParser: true,
